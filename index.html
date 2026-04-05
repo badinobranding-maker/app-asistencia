@@ -1,45 +1,109 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Asistencia DG3</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Asistencia DG3</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: white;
+  padding: 20px;
+}
+
+h1 { font-size: 40px; }
+
+input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+button {
+  padding: 8px 12px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+.ok { color: #00ff88; }
+.no { color: #ff4d4d; }
+
+li { margin: 10px 0; }
+</style>
 </head>
-<body style="font-family: Arial; background:#111; color:white; padding:20px;">
+
+<body>
 
 <h1>📋 Asistencia DG3</h1>
 
 <input id="nombre" placeholder="Nombre alumno">
 <button onclick="agregar()">Agregar</button>
 
+<h3 id="porcentaje">0%</h3>
+
 <ul id="lista"></ul>
 
 <script>
-let alumnos = [];
+let alumnos = JSON.parse(localStorage.getItem("alumnos")) || [];
+
+function guardar() {
+  localStorage.setItem("alumnos", JSON.stringify(alumnos));
+}
 
 function agregar() {
   let nombre = document.getElementById("nombre").value;
   if (!nombre) return;
+
   alumnos.push({nombre, presente:true});
+  document.getElementById("nombre").value = "";
+
+  guardar();
   render();
 }
 
 function toggle(i){
   alumnos[i].presente = !alumnos[i].presente;
+  guardar();
   render();
+}
+
+function borrar(i){
+  alumnos.splice(i,1);
+  guardar();
+  render();
+}
+
+function calcularPorcentaje(){
+  if(alumnos.length === 0) return "0%";
+
+  let presentes = alumnos.filter(a=>a.presente).length;
+  let total = alumnos.length;
+
+  return Math.round((presentes / total) * 100) + "%";
 }
 
 function render(){
   let html = "";
+
   alumnos.forEach((a,i)=>{
-    html += `<li>
-      ${a.nombre} - ${a.presente ? "✅" : "❌"}
+    html += `
+    <li>
+      ${a.nombre} 
+      <span class="${a.presente ? 'ok' : 'no'}">
+        ${a.presente ? '✅' : '❌'}
+      </span>
       <button onclick="toggle(${i})">Cambiar</button>
+      <button onclick="borrar(${i})">❌</button>
     </li>`;
   });
+
   document.getElementById("lista").innerHTML = html;
+  document.getElementById("porcentaje").innerText = calcularPorcentaje();
 }
+
+render();
 </script>
 
 </body>
-</html>%
+</html>
