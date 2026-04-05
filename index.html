@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asistencia DG3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="font-family: Arial; background:#111; color:white; padding:20px;">
+
+<h1>📋 Asistencia DG3</h1>
+
+<input id="nombre" placeholder="Nombre alumno">
+<button onclick="agregar()">Agregar</button>
+
+<ul id="lista"></ul>
+
+<script>
+let alumnos = [];
+
+function agregar() {
+  let nombre = document.getElementById("nombre").value;
+  if (!nombre) return;
+  alumnos.push({nombre, presente:true});
+  render();
+}
+
+function toggle(i){
+  alumnos[i].presente = !alumnos[i].presente;
+  render();
+}
+
+function render(){
+  let html = "";
+  alumnos.forEach((a,i)=>{
+    html += `<li>
+      ${a.nombre} - ${a.presente ? "✅" : "❌"}
+      <button onclick="toggle(${i})">Cambiar</button>
+    </li>`;
+  });
+  document.getElementById("lista").innerHTML = html;
+}
+</script>
+
+</body>
+</html>%
