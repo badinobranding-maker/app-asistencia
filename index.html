@@ -501,6 +501,86 @@ select{-webkit-appearance:none}
     <div id="lista-clases"></div>
   </div>
 
+
+  <!-- ══ CALENDARIO ══ -->
+  <div id="panel-calendario" class="panel">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Calendario</div>
+        <div class="topbar-sub" id="cal-sub">Asistencia y regularidad</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="badge" id="cal-cond-badge" style="background:#DCFCE7;color:#15803D">Regular</span>
+      </div>
+    </div>
+    <div class="stats-row" style="grid-template-columns:repeat(4,1fr)">
+      <div class="stat-box"><div class="stat-num ok" id="cal-pct">&#8212;%</div><div class="stat-lbl">Asistencia</div></div>
+      <div class="stat-box"><div class="stat-num" id="cal-cl">&#8212;</div><div class="stat-lbl">Clases</div></div>
+      <div class="stat-box"><div class="stat-num ok" id="cal-pr">&#8212;</div><div class="stat-lbl">Presentes</div></div>
+      <div class="stat-box"><div class="stat-num bad" id="cal-au">&#8212;</div><div class="stat-lbl">Ausencias</div></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin:0 14px 10px;padding:14px 16px;box-shadow:var(--shadow)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <span style="font-size:13px;font-weight:600;color:var(--text)">Regularidad</span>
+        <span id="cal-reg-text" style="font-size:12px;font-weight:600;color:var(--ok)">Regular &#8805; 75%</span>
+      </div>
+      <div class="prog-bar" style="height:8px"><div class="prog-fill" id="cal-reg-bar" style="width:0%;background:var(--ok)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:4px">
+        <span>0%</span><span id="cal-pct-label">0%</span><span>100%</span>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+        <span style="font-size:10px;color:var(--text2)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ok);margin-right:3px"></span>Regular &#8805; 75%</span>
+        <span style="font-size:10px;color:var(--text2)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:3px"></span>Riesgo 60&#8211;74%</span>
+        <span style="font-size:10px;color:var(--text2)"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--bad);margin-right:3px"></span>Libre &lt; 60%</span>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);margin:0 14px 10px;overflow:hidden;box-shadow:var(--shadow)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px 8px;border-bottom:1px solid var(--border)">
+        <button onclick="calPrevMes()" style="background:none;border:none;font-size:20px;color:var(--text2);cursor:pointer;padding:2px 8px;border-radius:8px;line-height:1">&#8249;</button>
+        <div style="text-align:center">
+          <span style="font-size:15px;font-weight:600;color:var(--text)" id="cal-mes-label">Abril</span>
+          <span style="font-size:13px;color:var(--text2);margin-left:5px" id="cal-anio-label">2026</span>
+        </div>
+        <button onclick="calNextMes()" style="background:none;border:none;font-size:20px;color:var(--text2);cursor:pointer;padding:2px 8px;border-radius:8px;line-height:1">&#8250;</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr)">
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">L</div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">M</div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">X</div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">J</div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">V</div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">S</div>
+        <div style="text-align:center;font-size:10px;font-weight:600;color:var(--text3);padding:7px 0 5px">D</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr)" id="cal-grid"></div>
+      <div style="border-top:1px solid var(--border);padding:12px 16px;min-height:70px" id="cal-detalle">
+        <div style="font-size:13px;color:var(--text3)">Toc&#225; un d&#237;a para ver detalles</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;padding:8px 16px 10px;border-top:1px solid var(--border)">
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--ok);display:inline-block"></span>Presente</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--bad);display:inline-block"></span>Ausente</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--pur);display:inline-block"></span>Justificada</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--text3);display:inline-block"></span>Feriado/Paro</div>
+        <div style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--primary);display:inline-block"></span>Programada</div>
+      </div>
+    </div>
+    <div class="sec-lbl">Condiciones de acreditaci&#243;n &#8212; FAD UNCUYO</div>
+    <div class="card" style="margin-bottom:8px">
+      <div class="cfg-row"><div><div class="cfg-lbl">Promocional (sin examen final)</div><div class="cfg-sub">Promedio &#8805; 8 + participaci&#243;n activa &#183; Ord. 108/10 CS</div></div><span class="badge ok">Prom &#8805; 8</span></div>
+      <div class="cfg-row"><div><div class="cfg-lbl">Regular (con examen final)</div><div class="cfg-sub">Entregar todos los TPs en tiempo y forma</div></div><span class="badge teal">4 TPs</span></div>
+      <div class="cfg-row"><div><div class="cfg-lbl">Asistencia m&#237;nima reglamentaria</div><div class="cfg-sub">Ordenanza general UNCUYO</div></div><span class="badge warn">75%</span></div>
+      <div class="cfg-row"><div><div class="cfg-lbl">Recuperatorio</div><div class="cfg-sub">Puede desaprobar y recuperar 1 TP por a&#241;o</div></div><span class="badge neu">1 TP</span></div>
+      <div class="cfg-row"><div><div class="cfg-lbl">Feriados y paros</div><div class="cfg-sub">No cuentan en el total de clases</div></div><span class="badge neu">No computan</span></div>
+      <div class="cfg-row" style="border-bottom:none"><div><div class="cfg-lbl">Libre por p&#233;rdida de regularidad</div><div class="cfg-sub">Transcurridos 2 a&#241;os y 1 mesa sin regularizar</div></div><span class="badge bad">+2 a&#241;os</span></div>
+    </div>
+    <div class="sec-lbl">Trabajos pr&#225;cticos 2026</div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="cfg-row"><div><div class="cfg-lbl">TP01 &#183; Sistema gr&#225;fico de afiches</div><div class="cfg-sub">Grupal &#183; 2&#8211;3 alumnos &#183; 1er cuatrimestre</div></div><span class="badge primary">TP01</span></div>
+      <div class="cfg-row"><div><div class="cfg-lbl">TP02 &#183; Dise&#241;o de experiencia</div><div class="cfg-sub">Grupal &#183; 4 alumnos &#183; Nave Universitaria</div></div><span class="badge primary">TP02</span></div>
+      <div class="cfg-row"><div><div class="cfg-lbl">TP03 &#183; Producci&#243;n editorial</div><div class="cfg-sub">Grupal &#183; 4 alumnos &#183; Coffee table books</div></div><span class="badge primary">TP03</span></div>
+      <div class="cfg-row" style="border-bottom:none"><div><div class="cfg-lbl">TP04 &#183; Autodescubrimiento</div><div class="cfg-sub">Individual &#183; Helv&#233;tica &#183; 2do cuatrimestre</div></div><span class="badge primary">TP04</span></div>
+    </div>
+  </div>
   <!-- ══ ALUMNOS ══ -->
   <div id="panel-alumnos" class="panel">
     <div class="topbar">
@@ -597,7 +677,11 @@ select{-webkit-appearance:none}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
     Clases
   </button>
-  <button class="tabi" onclick="goTab('alumnos',this)">
+ 
+  <button class="tabi" onclick="goTab('calendario',this)" id="tab-calendario">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><circle cx="8" cy="15" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="15" r="1.2" fill="currentColor" stroke="none"/><circle cx="16" cy="15" r="1.2" fill="currentColor" stroke="none"/></svg>
+    Cal.
+  </button> <button class="tabi" onclick="goTab('alumnos',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     Alumnos
   </button>
@@ -989,7 +1073,7 @@ function goTab(id,btn){
   if(id==='panel')renderDashboard();
   if(id==='alumnos')renderAlumnosPanel();
   if(id==='config')renderConfig();
-  if(id==='clases')renderClasesPanel();
+    if(id==='calendario')renderCalendario();if(id==='clases')renderClasesPanel();
 }
 function setRegNav(id,btn){
   document.querySelectorAll('#reg-nav .nav-tab').forEach(t=>t.classList.remove('on'));
@@ -1837,7 +1921,152 @@ function compartirEnRedes(){
 // ═══ VERIFICAR QR CON TOKEN TEMPORAL ═══
 
 // ═══ INIT ═══
-initApp();
+// ═══ CALENDARIO DG3 ═══
+const MESES_CAL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+let calMes=new Date().getMonth(),calAnio=new Date().getFullYear(),calDiaSel=null;
+
+function renderCalendario(){
+  actualizarStatsCalendario();
+  renderGridCalendario();
+}
+
+function actualizarStatsCalendario(){
+  const actPas=clasesActivas().filter(c=>esPasada(c.fecha));
+  const total=actPas.length;
+  let pres=0,aus=0,pct=0;
+  if(alumnos.length&&total){
+    pres=Math.round(alumnos.reduce((acc,a)=>acc+calcAlumno(a).p,0)/alumnos.length);
+    aus=Math.round(alumnos.reduce((acc,a)=>acc+calcAlumno(a).aus,0)/alumnos.length);
+    pct=total>0?Math.round((pres/total)*100):100;
+  }
+  document.getElementById('cal-pct').textContent=pct+'%';
+  document.getElementById('cal-cl').textContent=total;
+  document.getElementById('cal-pr').textContent=pres;
+  document.getElementById('cal-au').textContent=aus;
+  document.getElementById('cal-pct-label').textContent=pct+'%';
+  const bar=document.getElementById('cal-reg-bar');
+  const badge=document.getElementById('cal-cond-badge');
+  const regTxt=document.getElementById('cal-reg-text');
+  const minA=config.minAsistencia||75;
+  bar.style.width=Math.min(pct,100)+'%';
+  if(pct>=minA){
+    bar.style.background='var(--ok)';
+    badge.style.background='#DCFCE7';badge.style.color='#15803D';
+    badge.textContent='Regular';
+    regTxt.style.color='var(--ok)';
+    regTxt.textContent='Regular ≥ '+minA+'%';
+  } else if(pct>=60){
+    bar.style.background='var(--warn)';
+    badge.style.background='#FEF3C7';badge.style.color='#92400E';
+    badge.textContent='En riesgo';
+    regTxt.style.color='var(--warn)';
+    regTxt.textContent='Riesgo 60–'+(minA-1)+'%';
+  } else {
+    bar.style.background='var(--bad)';
+    badge.style.background='#FEE2E2';badge.style.color='#991B1B';
+    badge.textContent='Libre';
+    regTxt.style.color='var(--bad)';
+    regTxt.textContent='Libre < 60%';
+  }
+  document.getElementById('cal-sub').textContent='Vista general · '+alumnos.length+' alumnos';
+}
+
+function renderGridCalendario(){
+  const grid=document.getElementById('cal-grid');if(!grid)return;
+  grid.querySelectorAll('.cal-dcell').forEach(c=>c.remove());
+  document.getElementById('cal-mes-label').textContent=MESES_CAL[calMes];
+  document.getElementById('cal-anio-label').textContent=calAnio;
+  const primerDia=new Date(calAnio,calMes,1).getDay();
+  const offset=primerDia===0?6:primerDia-1;
+  const diasEnMes=new Date(calAnio,calMes+1,0).getDate();
+  const diasEnPrev=new Date(calAnio,calMes,0).getDate();
+  for(let i=0;i<offset;i++){
+    const d=diasEnPrev-offset+1+i;
+    const aM=calMes-1<0?11:calMes-1;
+    const aY=calMes-1<0?calAnio-1:calAnio;
+    grid.appendChild(calMakeCell(d,aY,aM,true));
+  }
+  for(let d=1;d<=diasEnMes;d++)grid.appendChild(calMakeCell(d,calAnio,calMes,false));
+  const total=offset+diasEnMes;
+  const rest=(7-(total%7))%7;
+  for(let d=1;d<=rest;d++){
+    const aM=calMes+1>11?0:calMes+1;
+    const aY=calMes+1>11?calAnio+1:calAnio;
+    grid.appendChild(calMakeCell(d,aY,aM,true));
+  }
+}
+
+function calMakeCell(d,y,m,otro){
+  const cell=document.createElement('div');
+  cell.className='cal-dcell';
+  cell.style.cssText='display:flex;flex-direction:column;align-items:center;padding:3px 1px;min-height:44px;cursor:pointer;';
+  const aM=m<0?11:m>11?0:m;
+  const aY=m<0?y-1:m>11?y+1:y;
+  const key=`${aY}-${String(aM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const hoy=new Date();
+  const esHoy=d===hoy.getDate()&&aM===hoy.getMonth()&&aY===hoy.getFullYear();
+  const esSel=calDiaSel===key;
+  const numDiv=document.createElement('div');
+  numDiv.style.cssText=`width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:14px;transition:background .12s;font-weight:${esHoy?'600':'400'};color:${otro?'var(--text3)':'var(--text)'};`;
+  if(esHoy&&!otro){numDiv.style.background='var(--primary-bg)';numDiv.style.color='var(--primary)';}
+  if(esSel){numDiv.style.background='var(--text)';numDiv.style.color='var(--bg2)';}
+  numDiv.textContent=d;
+  cell.appendChild(numDiv);
+  const clase=clases.find(c=>c.fecha===key);
+  if(clase){
+    const dot=document.createElement('div');
+    dot.style.cssText='width:5px;height:5px;border-radius:50%;margin-top:2px;flex-shrink:0;';
+    if(['feriado','receso','examenes','paro','sin_actividad'].includes(clase.tipo)){
+      dot.style.background='var(--text3)';
+    } else if(clase.tipo==='normal'&&esPasada(clase.fecha)){
+      const pr=alumnos.filter(a=>['P','T'].includes((asistencias[clase.id]||{})[a.id]?.estado)).length;
+      const p=alumnos.length>0?pr/alumnos.length:0;
+      dot.style.background=p>=0.75?'var(--ok)':p>=0.5?'var(--warn)':'var(--bad)';
+    } else if(clase.tipo==='normal'){
+      dot.style.background='var(--primary)';
+    }
+    cell.appendChild(dot);
+  }
+  cell.addEventListener('click',()=>calSelDia(d,aY,aM,key,clase,cell));
+  return cell;
+}
+
+function calSelDia(d,y,m,key,clase,cell){
+  calDiaSel=key;
+  renderGridCalendario();
+  const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const fObj=new Date(y,m,d);
+  const dLabel=`${dias[fObj.getDay()]} ${d} de ${MESES_CAL[m]} ${y}`;
+  const det=document.getElementById('cal-detalle');
+  if(!clase){
+    det.innerHTML=`<div style="font-size:11px;color:var(--text3);margin-bottom:5px">${dLabel}</div><div style="font-size:13px;color:var(--text3)">Sin clase registrada</div>`;
+    return;
+  }
+  const tLbl={normal:'Clase',feriado:'Feriado',paro:'Paro/Huelga',receso:'Receso',examenes:'Exámenes',institucional:'Institucional',especial:'Especial',sin_actividad:'Sin actividad'};
+  const tCol={normal:'var(--primary)',feriado:'var(--bad)',paro:'var(--text2)',receso:'var(--warn)',examenes:'var(--pur)',institucional:'var(--ok)',sin_actividad:'var(--text3)'};
+  let estadoHTML='';
+  if(clase.tipo==='normal'&&esPasada(clase.fecha)){
+    const pr=alumnos.filter(a=>['P','T'].includes((asistencias[clase.id]||{})[a.id]?.estado)).length;
+    estadoHTML=`<span style="font-size:12px;color:var(--text2);margin-top:4px;display:block">${pr} de ${alumnos.length} presentes</span>`;
+  } else if(clase.tipo==='normal'){
+    estadoHTML='<span class="badge primary" style="margin-top:4px;display:inline-block">Programada</span>';
+  }
+  det.innerHTML=`<div style="font-size:11px;color:var(--text3);margin-bottom:6px">${dLabel}</div>
+    <div style="display:flex;align-items:flex-start;gap:10px">
+      <div style="width:28px;height:28px;border-radius:50%;background:${(tCol[clase.tipo]||'var(--primary)')}22;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:${tCol[clase.tipo]||'var(--primary)'};flex-shrink:0">${(tLbl[clase.tipo]||clase.tipo)[0]}</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600;color:var(--text)">${tLbl[clase.tipo]||clase.tipo}</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:2px">${clase.tema||clase.motivo||''}</div>
+        ${estadoHTML}
+        ${clase.tipo==='normal'?`<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="irARegistro('${clase.fecha}')">&#128203; Ir al registro</button></div>`:''}
+      </div>
+    </div>`;
+}
+
+function calPrevMes(){calMes--;if(calMes<0){calMes=11;calAnio--;}calDiaSel=null;renderGridCalendario();}
+function calNextMes(){calMes++;if(calMes>11){calMes=0;calAnio++;}calDiaSel=null;renderGridCalendario();}
+// ═══ FIN CALENDARIO ═══
+  initApp();
 </script>
 </body>
 </html>
