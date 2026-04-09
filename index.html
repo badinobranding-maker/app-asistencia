@@ -1070,7 +1070,7 @@ function renderAlumnosList(clase,busq=''){
         </div>
         <div class="arow-info">
           <div class="arow-nombre">${a.nombre}</div>
-          <div class="arow-sub">${a.legajo||''} · ${d.pct}% · ${d.rest} faltas disp.</div>
+          <div class="arow-sub">#${alumnos.indexOf(a)+1} · ${a.legajo||''} · ${d.pct}% · ${d.rest} faltas disp.</div>
         </div>
         <div class="arow-right">
           <span class="badge ${d.libre?'bad':d.riesgo?'warn':'ok'}">${d.libre?'Libre':d.riesgo?'Riesgo':'Regular'}</span>
@@ -1296,7 +1296,7 @@ function renderAlumnosPanel(){
       </div>
       <div class="arow-info">
         <div class="arow-nombre">${a.nombre}</div>
-        <div class="arow-sub">${a.legajo||''}${com?' · '+com.nombre:''}</div>
+        <div class="arow-sub">#${alumnos.indexOf(a)+1} · ${a.legajo||''}${com?' · '+com.nombre:''}</div>
         <div style="margin-top:4px"><div class="prog-bar"><div class="prog-fill ${pctC==='bad'?'bad':pctC==='warn'?'warn':''}" style="width:${d.pct}%"></div></div></div>
       </div>
       <div class="arow-right">
@@ -1841,4 +1841,3 @@ initApp();
 </script>
 </body>
 </html>
-
